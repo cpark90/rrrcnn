@@ -1,0 +1,365 @@
+Command Line Args: Namespace(config_file='', dist_url='tcp://127.0.0.1:49152', eval_only=False, machine_rank=0, num_gpus=1, num_machines=1, opts=[], resume=False)
+[32m[05/13 20:02:27 detectron2]: [0mRank of current process: 0. World size: 1
+[32m[05/13 20:02:27 detectron2]: [0mEnvironment info:
+------------------------  ---------------------------------------------------------
+sys.platform              linux
+Python                    3.7.4 (default, Aug 13 2019, 20:35:49) [GCC 7.3.0]
+numpy                     1.17.4
+detectron2                0.1.1 @/ws/external/detectron2/detectron2
+detectron2 compiler       GCC 7.4
+detectron2 CUDA compiler  10.1
+detectron2 arch flags     sm_75
+DETECTRON2_ENV_MODULE     <not set>
+PyTorch                   1.4.0 @/opt/conda/lib/python3.7/site-packages/torch
+PyTorch debug build       False
+CUDA available            True
+GPU 0,1                   TITAN RTX
+CUDA_HOME                 /usr/local/cuda
+NVCC                      Cuda compilation tools, release 10.1, V10.1.243
+Pillow                    7.0.0
+torchvision               0.5.0 @/opt/conda/lib/python3.7/site-packages/torchvision
+torchvision arch flags    sm_35, sm_50, sm_60, sm_70, sm_75
+cv2                       4.2.0
+------------------------  ---------------------------------------------------------
+PyTorch built with:
+  - GCC 7.3
+  - Intel(R) Math Kernel Library Version 2019.0.4 Product Build 20190411 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v0.21.1 (Git Hash 7d2fd500bc78936d1d648ca713b901012f470dbc)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - NNPACK is enabled
+  - CUDA Runtime 10.1
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_37,code=compute_37
+  - CuDNN 7.6.3
+  - Magma 2.5.1
+  - Build settings: BLAS=MKL, BUILD_NAMEDTENSOR=OFF, BUILD_TYPE=Release, CXX_FLAGS= -Wno-deprecated -fvisibility-inlines-hidden -fopenmp -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -O2 -fPIC -Wno-narrowing -Wall -Wextra -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Wno-stringop-overflow, DISABLE_NUMA=1, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, USE_CUDA=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, USE_STATIC_DISPATCH=OFF, 
+
+[32m[05/13 20:02:27 detectron2]: [0mCommand line arguments: Namespace(config_file='configs/classification/Base-Classification.yaml', dist_url='tcp://127.0.0.1:49152', eval_only=False, machine_rank=0, num_gpus=1, num_machines=1, opts=[], resume=False)
+[32m[05/13 20:02:27 detectron2]: [0mContents of args.config_file=configs/classification/Base-Classification.yaml:
+MODEL:
+  PIXEL_MEAN: [0, 0, 0]
+  PIXEL_STD: [1, 1, 1]
+  CUSTOM:
+    CLASSES: 10
+    INPUT_SIZE: 32
+    CHANNELS: 60 # 20 * 9
+    NUM_KERNEL: 3
+    NORM: "BN"
+    PSR:
+      CONVF_NAME: "PR4ConvF" # "PR4ConvF", "PR8ConvF","PSR4ConvF","PSR8ConvF"
+      CONV_NAME: "PR4Conv" # "PR4Conv", "PR8Conv", "PSR4Conv", "PSR8Conv"
+      ROT_1x1: False
+      NOISE_VAR: 0
+  META_ARCHITECTURE: "GeneralizedClassification"
+  BACKBONE:
+    NAME: "build_psr_backbone"
+DATASETS:
+  TRAIN: ("cifar10",)
+  TEST: ("cifar10_test",)
+  CUSTOM:
+    DATASET_MAPPER: "ClassificationDatasetMapper"
+    ROTATION_TRAIN: 0
+    ROTATION_TEST: 0
+DATALOADER:
+  NUM_WORKERS: 1
+SOLVER:
+  LR_SCHEDULER_NAME: "WarmupMultiStepLR"
+  MOMENTUM: 0.9
+  WEIGHT_DECAY: 0.0
+  WEIGHT_DECAY_NORM: 0.0
+  GAMMA: 0.1
+  WARMUP_FACTOR: 0.001
+  CHECKPOINT_PERIOD: 3000
+  IMS_PER_BATCH: 256
+  BASE_LR: 0.001
+  STEPS: (5000, 7000, 9000)
+  MAX_ITER: 11000
+TEST:
+  EVAL_PERIOD: 600
+OUTPUT_DIR: "/ws/output/pr4_wo_n0_c60_0_0"
+VERSION: 2
+
+[32m[05/13 20:02:27 detectron2]: [0mRunning with full config:
+CUDNN_BENCHMARK: False
+DATALOADER:
+  ASPECT_RATIO_GROUPING: True
+  FILTER_EMPTY_ANNOTATIONS: True
+  NUM_WORKERS: 1
+  REPEAT_THRESHOLD: 0.0
+  SAMPLER_TRAIN: TrainingSampler
+DATASETS:
+  CUSTOM:
+    DATASET_MAPPER: ClassificationDatasetMapper
+    ROTATION_TEST: 0
+    ROTATION_TRAIN: 0
+  PRECOMPUTED_PROPOSAL_TOPK_TEST: 1000
+  PRECOMPUTED_PROPOSAL_TOPK_TRAIN: 2000
+  PROPOSAL_FILES_TEST: ()
+  PROPOSAL_FILES_TRAIN: ()
+  TEST: ('cifar10_test',)
+  TRAIN: ('cifar10',)
+GLOBAL:
+  HACK: 1.0
+INPUT:
+  CROP:
+    ENABLED: False
+    SIZE: [0.9, 0.9]
+    TYPE: relative_range
+  FORMAT: BGR
+  MASK_FORMAT: polygon
+  MAX_SIZE_TEST: 1333
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_TEST: 800
+  MIN_SIZE_TRAIN: (800,)
+  MIN_SIZE_TRAIN_SAMPLING: choice
+MODEL:
+  ANCHOR_GENERATOR:
+    ANGLES: [[-90, 0, 90]]
+    ASPECT_RATIOS: [[0.5, 1.0, 2.0]]
+    NAME: DefaultAnchorGenerator
+    OFFSET: 0.0
+    SIZES: [[32, 64, 128, 256, 512]]
+  BACKBONE:
+    FREEZE_AT: 2
+    NAME: build_psr_backbone
+  CUSTOM:
+    CHANNELS: 60
+    CLASSES: 10
+    INPUT_SIZE: 32
+    NORM: BN
+    NUM_KERNEL: 3
+    PSR:
+      CONVF_NAME: PR4ConvF
+      CONV_NAME: PR4Conv
+      NOISE_VAR: 0
+      ROT_1x1: False
+  DEVICE: cuda
+  FPN:
+    FUSE_TYPE: sum
+    IN_FEATURES: []
+    NORM: 
+    OUT_CHANNELS: 256
+  KEYPOINT_ON: False
+  LOAD_PROPOSALS: False
+  MASK_ON: False
+  META_ARCHITECTURE: GeneralizedClassification
+  PANOPTIC_FPN:
+    COMBINE:
+      ENABLED: True
+      INSTANCES_CONFIDENCE_THRESH: 0.5
+      OVERLAP_THRESH: 0.5
+      STUFF_AREA_LIMIT: 4096
+    INSTANCE_LOSS_WEIGHT: 1.0
+  PIXEL_MEAN: [0, 0, 0]
+  PIXEL_STD: [1, 1, 1]
+  PROPOSAL_GENERATOR:
+    MIN_SIZE: 0
+    NAME: RPN
+  RESNETS:
+    DEFORM_MODULATED: False
+    DEFORM_NUM_GROUPS: 1
+    DEFORM_ON_PER_STAGE: [False, False, False, False]
+    DEPTH: 50
+    NORM: FrozenBN
+    NUM_GROUPS: 1
+    OUT_FEATURES: ['res4']
+    RES2_OUT_CHANNELS: 256
+    RES5_DILATION: 1
+    STEM_OUT_CHANNELS: 64
+    STRIDE_IN_1X1: True
+    WIDTH_PER_GROUP: 64
+  RETINANET:
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0)
+    FOCAL_LOSS_ALPHA: 0.25
+    FOCAL_LOSS_GAMMA: 2.0
+    IN_FEATURES: ['p3', 'p4', 'p5', 'p6', 'p7']
+    IOU_LABELS: [0, -1, 1]
+    IOU_THRESHOLDS: [0.4, 0.5]
+    NMS_THRESH_TEST: 0.5
+    NUM_CLASSES: 80
+    NUM_CONVS: 4
+    PRIOR_PROB: 0.01
+    SCORE_THRESH_TEST: 0.05
+    SMOOTH_L1_LOSS_BETA: 0.1
+    TOPK_CANDIDATES_TEST: 1000
+  ROI_BOX_CASCADE_HEAD:
+    BBOX_REG_WEIGHTS: ((10.0, 10.0, 5.0, 5.0), (20.0, 20.0, 10.0, 10.0), (30.0, 30.0, 15.0, 15.0))
+    IOUS: (0.5, 0.6, 0.7)
+  ROI_BOX_HEAD:
+    BBOX_REG_WEIGHTS: (10.0, 10.0, 5.0, 5.0)
+    CLS_AGNOSTIC_BBOX_REG: False
+    CONV_DIM: 256
+    FC_DIM: 1024
+    NAME: 
+    NORM: 
+    NUM_CONV: 0
+    NUM_FC: 0
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+    SMOOTH_L1_BETA: 0.0
+    TRAIN_ON_PRED_BOXES: False
+  ROI_HEADS:
+    BATCH_SIZE_PER_IMAGE: 512
+    IN_FEATURES: ['res4']
+    IOU_LABELS: [0, 1]
+    IOU_THRESHOLDS: [0.5]
+    NAME: Res5ROIHeads
+    NMS_THRESH_TEST: 0.5
+    NUM_CLASSES: 80
+    POSITIVE_FRACTION: 0.25
+    PROPOSAL_APPEND_GT: True
+    SCORE_THRESH_TEST: 0.05
+  ROI_KEYPOINT_HEAD:
+    CONV_DIMS: (512, 512, 512, 512, 512, 512, 512, 512)
+    LOSS_WEIGHT: 1.0
+    MIN_KEYPOINTS_PER_IMAGE: 1
+    NAME: KRCNNConvDeconvUpsampleHead
+    NORMALIZE_LOSS_BY_VISIBLE_KEYPOINTS: True
+    NUM_KEYPOINTS: 17
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+  ROI_MASK_HEAD:
+    CLS_AGNOSTIC_MASK: False
+    CONV_DIM: 256
+    NAME: MaskRCNNConvUpsampleHead
+    NORM: 
+    NUM_CONV: 0
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+  RPN:
+    BATCH_SIZE_PER_IMAGE: 256
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0)
+    BOUNDARY_THRESH: -1
+    HEAD_NAME: StandardRPNHead
+    IN_FEATURES: ['res4']
+    IOU_LABELS: [0, -1, 1]
+    IOU_THRESHOLDS: [0.3, 0.7]
+    LOSS_WEIGHT: 1.0
+    NMS_THRESH: 0.7
+    POSITIVE_FRACTION: 0.5
+    POST_NMS_TOPK_TEST: 1000
+    POST_NMS_TOPK_TRAIN: 2000
+    PRE_NMS_TOPK_TEST: 6000
+    PRE_NMS_TOPK_TRAIN: 12000
+    SMOOTH_L1_BETA: 0.0
+  SEM_SEG_HEAD:
+    COMMON_STRIDE: 4
+    CONVS_DIM: 128
+    IGNORE_VALUE: 255
+    IN_FEATURES: ['p2', 'p3', 'p4', 'p5']
+    LOSS_WEIGHT: 1.0
+    NAME: SemSegFPNHead
+    NORM: GN
+    NUM_CLASSES: 54
+  WEIGHTS: 
+OUTPUT_DIR: /ws/output/pr4_wo_n0_c60_0_0
+SEED: -1
+SOLVER:
+  BASE_LR: 0.001
+  BIAS_LR_FACTOR: 1.0
+  CHECKPOINT_PERIOD: 3000
+  CLIP_GRADIENTS:
+    CLIP_TYPE: value
+    CLIP_VALUE: 1.0
+    ENABLED: False
+    NORM_TYPE: 2.0
+  GAMMA: 0.1
+  IMS_PER_BATCH: 256
+  LR_SCHEDULER_NAME: WarmupMultiStepLR
+  MAX_ITER: 11000
+  MOMENTUM: 0.9
+  STEPS: (5000, 7000, 9000)
+  WARMUP_FACTOR: 0.001
+  WARMUP_ITERS: 1000
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0
+  WEIGHT_DECAY_BIAS: 0.0001
+  WEIGHT_DECAY_NORM: 0.0
+TEST:
+  AUG:
+    ENABLED: False
+    FLIP: True
+    MAX_SIZE: 4000
+    MIN_SIZES: (400, 500, 600, 700, 800, 900, 1000, 1100, 1200)
+  DETECTIONS_PER_IMAGE: 100
+  EVAL_PERIOD: 600
+  EXPECTED_RESULTS: []
+  KEYPOINT_OKS_SIGMAS: []
+  PRECISE_BN:
+    ENABLED: False
+    NUM_ITER: 200
+VERSION: 2
+VIS_PERIOD: 0
+[32m[05/13 20:02:27 detectron2]: [0mFull config saved to /ws/output/pr4_wo_n0_c60_0_0/config.yaml
+[32m[05/13 20:02:27 d2.utils.env]: [0mUsing a generated random seed 28044994
+[32m[05/13 20:02:29 d2.engine.defaults]: [0mModel:
+GeneralizedClassification(
+  (backbone): PSRNet(
+    (convf): PR4ConvF(
+      (conv): _R4Conv(
+        in_channels=3, out_channels=60, kernel_type=1, stride=(1, 1), padding=(1, 1), dilation=(1, 1), bias=False
+        (norm): BatchNorm2d(60, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (conv1): PR4Conv(
+      (conv): _R4Conv(
+        in_channels=240, out_channels=60, kernel_type=1, stride=(1, 1), padding=(1, 1), dilation=(1, 1), bias=False
+        (norm): BatchNorm2d(60, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+    (linear): Linear(in_features=240, out_features=10, bias=True)
+  )
+  (criterion): CrossEntropyLoss()
+)
+Files already downloaded and verified
+[32m[05/13 20:02:31 fvcore.common.checkpoint]: [0mNo checkpoint found. Initializing model from scratch
+[32m[05/13 20:02:31 d2.engine.train_loop]: [0mStarting training from iteration 0
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+[32m[05/13 20:02:36 d2.utils.events]: [0m eta: 0:47:26  iter: 19  total_loss: 2.356  total_acc: 8.421  time: 0.2594  data_time: 0.0477  lr: 0.000020  max_mem: 3124M
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+[32m[05/13 20:02:42 d2.utils.events]: [0m eta: 0:47:18  iter: 39  total_loss: 2.341  total_acc: 8.970  time: 0.2582  data_time: 0.0495  lr: 0.000040  max_mem: 3124M
+torch.Size([256, 240, 32, 32])
+torch.Size([256, 240, 32, 32])
+[32m[05/13 20:02:42 d2.engine.hooks]: [0mOverall training speed: 40 iterations in 0:00:10 (0.2616 s / it)
+[32m[05/13 20:02:42 d2.engine.hooks]: [0mTotal training time: 0:00:10 (0:00:00 on hooks)

@@ -1,0 +1,75 @@
+MODEL:
+  MASK_ON: False
+  META_ARCHITECTURE: "CustomizedRCNN"
+  BACKBONE:
+    NAME: "build_gtnet_fpn_backbone"
+    FREEZE_AT: 0
+  FPN:
+    IN_FEATURES: ["res2", "res3", "res4", "res5"]
+    OUT_CHANNELS: 256
+    NORM: ""
+    FUSE_TYPE: "sum"
+  ANCHOR_GENERATOR:
+    NAME: "RotatedAnchorGenerator"
+    SIZES: [[32], [64], [128], [256], [512]]
+    ASPECT_RATIOS: [[0.5, 1.0, 2.0]]
+    ANGLES: [[-90, -60, -30, 0, 30, 60, 90]]
+  ROI_BOX_HEAD:
+    NAME: "CustomFastRCNNConvFCHead"
+    POOLER_TYPE: "ROIAlignRotated"
+    BBOX_REG_WEIGHTS: (10.0, 10.0, 5.0, 5.0, 20.0)
+    NUM_FC: 2
+    POOLER_RESOLUTION: 7
+    NUM_CONV: 4
+    NORM: "BN"
+    CLS_AGNOSTIC_BBOX_REG: True
+  ROI_BOX_CASCADE_HEAD:
+    BBOX_REG_WEIGHTS: ((10.0, 10.0, 5.0, 5.0, 20), (20.0, 20.0, 10.0, 10.0, 30), (30.0, 30.0, 15.0, 15.0, 40),)
+    IOUS: (0.5, 0.6, 0.7)
+  ROI_HEADS:
+    NAME: "TridentCRROIHeads"
+    NUM_CLASSES: 4
+    IN_FEATURES: ["p2", "p3", "p4", "p5"]
+    POSITIVE_FRACTION: 0.5
+    BATCH_SIZE_PER_IMAGE: 128
+    PROPOSAL_APPEND_GT: True
+  PROPOSAL_GENERATOR:
+    NAME: "TridentRRPN"
+  RPN:
+    IN_FEATURES: ["p2", "p3", "p4", "p5", "p6"]
+    POST_NMS_TOPK_TRAIN: 500
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0, 1.0)
+  RESNETS:
+    DEPTH: 50
+#    OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+    OUT_FEATURES: ["res5",]
+    NUM_GROUPS: 1
+    NORM: "BN"
+    WIDTH_PER_GROUP: 64
+    STRIDE_IN_1X1: False
+    RES5_DILATION: 1
+    RES2_OUT_CHANNELS: 128
+    STEM_OUT_CHANNELS: 64
+  TRIDENT:
+    NUM_BRANCH: 1
+    BRANCH_DILATIONS: [1]
+    TEST_BRANCH_IDX: -1
+#    NUM_BRANCH: 3
+#    BRANCH_DILATIONS: [1, 2, 3]
+#    TEST_BRANCH_IDX: -1
+    TRIDENT_STAGE: "res4"
+DATASETS:
+  DATASET_MAPPER: "CustomizedDatasetMapperRotated"
+  TRAIN: ("imgnet",)
+  TEST: ("imgnet_test",)
+DATALOADER:
+  NUM_WORKERS: 1
+SOLVER:
+  CHECKPOINT_PERIOD: 3000
+  IMS_PER_BATCH: 2
+  BASE_LR: 0.02
+  STEPS: (30000, 80000)
+  MAX_ITER: 90000
+INPUT:
+  MIN_SIZE_TRAIN: (640, 672, 704, 736, 768, 800)
+VERSION: 2

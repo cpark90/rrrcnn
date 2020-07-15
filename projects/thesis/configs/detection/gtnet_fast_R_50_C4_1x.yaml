@@ -1,0 +1,5 @@
+_BASE_: "Base-Classification.yaml"
+MODEL:
+  WEIGHTS: "/ws/data/outputs/gtcascade/pretrained/checkpoint.pth"
+  MASK_ON: False
+OUTPUT_DIR: "/ws/data/outputs/gtcascade"

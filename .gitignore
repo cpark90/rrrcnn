@@ -45,3 +45,11 @@ wheels/
 /datasets
 /projects/*/datasets
 /models
+
+**/__pycache__
+**/.idea
+**/*.egg-info
+**/build
+*.so
+*.egg
+**/dist

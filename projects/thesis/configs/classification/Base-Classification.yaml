@@ -1,0 +1,72 @@
+MODEL:
+  PIXEL_MEAN: [0, 0, 0]
+  PIXEL_STD: [1, 1, 1]
+  RESNETS:
+    OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+    DEPTH: 50
+    RES2_OUT_CHANNELS: 256
+    STEM_OUT_CHANNELS: 64
+    #DEFORM_ON_PER_STAGE: [False, True, True, True]
+    DEFORM_ON_PER_STAGE: [False, False, False, False]
+    NORM: "BN"
+  FPN:
+    IN_FEATURES: ["res2", "res3", "res4", "res5"]
+  CUSTOM:
+    CLASSES: 10
+    INPUT_SIZE: 128
+    CHANNELS: 20 # 20 * 9
+    NUM_KERNEL: 3
+    NORM: "BN"
+    PSR:
+      CONVF_NAME: "PR8ConvF" # "PR4ConvF", "PR8ConvF","PSR4ConvF","PSR8ConvF"
+      CONV_NAME: "PR8Conv" # "PR4Conv", "PR8Conv", "PSR4Conv", "PSR8Conv"
+      ROT_1x1: True
+      NOISE_VAR: 0.01
+    PS:
+      KERNEL_TYPE: 1
+      SPATIAL: False
+      SPATIAL_1x1: False
+      NOISE_VAR: 0.01
+    RESNETS:
+      ROT_1x1: False
+      NOISE_VAR: 0.01
+      STEM:
+        CONVF_7x7: True
+        CONVF_NAME: "PR8ConvF"
+        STRIDE_PSR: 1
+      BLOCK:
+        CONV_NAME: "PR8Conv"
+        CONV_1x1_ROT: True
+    FPN:
+      CONVF_NAME: "PR8ConvF"
+      CONV_NAME: "PR8Conv"
+      NOISE_VAR: 0.0
+  META_ARCHITECTURE: "GeneralizedClassification"
+  BACKBONE:
+    NAME: "build_psr_fpn_backbone"
+    FREEZE_AT: 0
+DATASETS:
+  TRAIN: ("cifar10",)
+  TEST: ("cifar10_test",)
+  CUSTOM:
+    DATASET_MAPPER: "ClassificationDatasetMapper"
+    ROTATION_TRAIN: 0
+    ROTATION_TEST: 0
+DATALOADER:
+  NUM_WORKERS: 2
+SOLVER:
+  LR_SCHEDULER_NAME: "WarmupMultiStepLR"
+  MOMENTUM: 0.9
+  WEIGHT_DECAY: 0.0
+  WEIGHT_DECAY_NORM: 0.0
+  GAMMA: 0.1
+  WARMUP_FACTOR: 0.001
+  CHECKPOINT_PERIOD: 3000
+  IMS_PER_BATCH: 128
+  BASE_LR: 0.01
+  STEPS: (5000, 7000, 9000)
+  MAX_ITER: 11000
+TEST:
+  EVAL_PERIOD: 600
+OUTPUT_DIR: "/ws/output/test"
+VERSION: 2
